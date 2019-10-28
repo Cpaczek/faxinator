@@ -5,106 +5,10 @@
         </p>
         <div class="scrollbox">
             <ul class="menu-list">
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <p class="contact-name">John</p>
-                        <p class="contact-number">555-555-5555</p>
+                <li v-for="contact in getConfig.contacts" :key="contact.id">
+                    <a @click="setContact(contact.id)">
+                        <p class="contact-name">{{contact.name}}</p>
+                        <p class="contact-number">{{contact.number}}</p>
                     </a>
                 </li>
 
@@ -114,7 +18,20 @@
     </aside>
 </template>
 <script>
-    export default{}
+    export default{
+        computed:{
+            getConfig(){
+                return this.$store.getters.getConfig;
+            },
+
+        },
+        methods:{
+            setContact(id){
+                this.$store.commit('setSelectedContact', id);
+            }
+        }
+
+    }
 </script>
 <style scoped>
     aside{
@@ -133,5 +50,9 @@
     .menu-list{
         overflow-y: scroll;
         max-height: 80vh;
+    }
+    .menu-list a:hover {
+        background-color: #d8d8d8;
+        color: #363636;
     }
 </style>

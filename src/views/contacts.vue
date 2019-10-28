@@ -5,30 +5,21 @@
         <sidebar></sidebar>
         <div class="contacts-container">
 
-            <h1 class="header">Contacts</h1>
+            <h1 class="header">Selected Contact</h1>
 
-            <div class="container">
-                <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Text input">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Text input">
-                    </div>
-                </div>
-            </div>
+            <viewContact></viewContact>
+
+
         </div>
     </div>
 </template>
 <script>
     import sidebar from '../components/sidebar.vue'
+    import viewContact from '../components/viewContact.vue'
     export default{
         components: {
-            sidebar
+            sidebar,
+            viewContact
         }
     }
 </script>
@@ -41,5 +32,4 @@
         text-align: center;
         margin-top: 100px;
     }
-
 </style>

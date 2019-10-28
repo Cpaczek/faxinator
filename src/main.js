@@ -1,16 +1,38 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store/store'
+import fs from 'fs'
+import {ipcRenderer} from 'electron'
 import "./../node_modules/bulma/bulma.sass";
 
 Vue.config.productionTip = false
 
-
 new Vue({
     router,
+    store,
     render: h => h(App),
+
     mounted(){
-        router.push({ path: '/' })
+        ipcRenderer.send('appPath');
+        ipcRenderer.on('appPathReply', (event, arg) => {
+            this.setAppPath(arg);
+            console.log("arg being logged" + arg);
+            console.log("getapppath" + this.getApppath)
+            this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
+        });
+        // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
+        console.log("getapppath" + this.getApppath)
+
+        setInterval(()=>{
+            // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
+            this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
+            console.log("interval app path" + this.getApppath)
+        }, 3000)
+
+
+
+
         let allowedKeys = {
             37: 'left',
             38: 'up',
@@ -21,7 +43,7 @@ new Vue({
         };
         let konamiCode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
         let konamiCodePosition = 0;
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             let key = allowedKeys[e.keyCode];
             let requiredKey = konamiCode[konamiCodePosition];
             if (key == requiredKey) {
@@ -36,6 +58,21 @@ new Vue({
         });
         function activateCheats() {
             router.push({path: 'supersecertpagethatwillallowyoutoedittheconfig'});
+        }
+    },
+    methods: {
+        setConfig(val){
+            this.$store.commit('setConfig', val)
+
+        },
+        setAppPath(val){
+            this.$store.commit('setAppPath', val);
+        },
+
+    },
+    computed:{
+        getApppath(){
+            return this.$store.getters.getApppath;
         }
     }
 }).$mount('#app')
