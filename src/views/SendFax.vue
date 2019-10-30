@@ -17,7 +17,7 @@
             <a href="#" @click="chooseFile()" class="button is-primary">Choose File</a>
             <p>{{getFileName()}}</p>
             <br>
-            <a href="#" v-if="number && getSelectedDir" @click="SendFax()" class="button is-primary">Send</a>
+            <a href="#" v-if="number && getSelectedDir" @click="sendFax()" class="button is-primary">Send</a>
 
         </div>
     </div>
