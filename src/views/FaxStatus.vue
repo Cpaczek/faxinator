@@ -27,7 +27,10 @@
     import Swal from 'sweetalert2'
     export default{
         mounted(){
+
             this.refreshFaxes();
+            this.setLoading(true);
+            this.setLoadingMessage("Retrieving Faxes")
         },
         methods:{
             refreshFaxes(){
@@ -35,9 +38,11 @@
                 axios.get(this.getConfig.functionsDomain + '/get-faxes?authtoken=' + this.getConfig.secret)
                     .then(function (response) {
                         // handle success
+                        _this.setLoading(false);
                         _this.setFaxes(response.data)
                     })
                     .catch(function (error) {
+                        _this.setLoading(false);
                         Swal.fire('Refreshing Faxes Failed', 'We were not able to receive previous faxes. Please try again later', 'error');
                     })
             },
@@ -51,7 +56,13 @@
             },
             hrd(date){
                 return new Date(date).toLocaleString();
-            }
+            },
+            setLoading(val){
+                this.$store.commit('setLoading', val);
+            },
+            setLoadingMessage(val){
+                this.$store.commit('setLoadingMessage', val);
+            },
         },
         computed:{
             getFaxes(){
@@ -60,6 +71,7 @@
             getConfig(){
                 return this.$store.getters.getConfig;
             },
+
         }
     }
 </script>
