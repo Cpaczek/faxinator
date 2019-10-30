@@ -8,8 +8,8 @@
 </template>
 
 <script>
-    import hamburger from './components/menu.vue'
-    import loader from './components/loader.vue'
+    import hamburger from './components/Menu.vue'
+    import loader from './components/Loader.vue'
     export default {
         name: 'app',
         mounted(){

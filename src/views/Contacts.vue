@@ -14,8 +14,8 @@
     </div>
 </template>
 <script>
-    import sidebar from '../components/sidebar.vue'
-    import viewContact from '../components/viewContact.vue'
+    import sidebar from '../components/Sidebar.vue'
+    import viewContact from '../components/ViewContact.vue'
     export default{
         components: {
             sidebar,

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Contacts from './views/contacts.vue'
-import FaxStatus from './views/faxStatus.vue'
-import SendFax from './views/sendFax.vue'
-import config from './views/config.vue'
+import Contacts from './views/Contacts.vue'
+import FaxStatus from './views/FaxStatus.vue'
+import SendFax from './views/SendFax.vue'
+import config from './views/Config.vue'
 
 // const Category = () => System.import('./theme/Category.vue')
 // const Login = () => System.import('./theme/Login.vue')
