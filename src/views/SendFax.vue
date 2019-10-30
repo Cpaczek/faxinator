@@ -75,22 +75,18 @@
                     filename: Date.now() + ".pdf"
                 })
                     .then(function (response) {
-                        console.log(response);
                         //upload url
                         _this.tempUploadUrl = response.data.uploadurl;
                         _this.tempViewUrl = response.data.viewurl;
                         _this.setLoadingMessage("Converting PDF")
-//                        const itemStream = createReadStream(_this.selectedDir);
                         let pdf = null;
                         pdf = fs.readFileSync(_this.getSelectedDir);
-//                        console.log(itemStream)
                         _this.setLoadingMessage("Uploading PDF")
                         axios.put(_this.tempUploadUrl, pdf, {
                             headers: {
                                 "Content-Type": "application/pdf",
                             }
                         }).then((res) => {
-                            console.log(res)
                             //Twilio Post Request
                             _this.setLoadingMessage("Queueing")
                             axios.post(_this.getConfig.functionsDomain + '/send-fax', {
@@ -107,7 +103,6 @@
                                             }
                                         })
                                             .then(function (response) {
-                                                console.log(response);
                                                 let done = ['queued', 'processing', 'sending'];
 
                                                 if(done.includes(response.data.status)){
@@ -117,38 +112,38 @@
                                                    _this.number = null;
                                                    _this.name = null;
                                                     Swal.fire('Fax Delivered', 'Your message has been delivered', 'success');
-                                                    console.log("twilio delivered")
+
                                                     clearInterval(loop)
                                                     _this.setLoading(false)
                                                 }else{
                                                     Swal.fire('Fax Failed', 'Your message has not been delivered', 'error');
                                                     clearInterval(loop)
-                                                    console.log("twilio failed")
+
                                                 }
                                             })
                                             .catch(function (error) {
                                                 Swal.fire('Fax Failed', 'Your message has not been delivered', 'error');
                                                 _this.setLoading(false);
                                                 clearInterval(loop)
-                                                console.log(error);
+
                                             });
                                     }, 3000)
-                                    console.log(response);
+
                                 })
                                 .catch(function (error) {
                                     Swal.fire('Fax Failed', 'Your message has not been delivered', 'error');
                                     _this.setLoading(false);
-                                    console.log(error);
+
                                 });
                         }).catch((err) => {
-                            console.log(err)
+
                             Swal.fire('Fax Failed', 'Your message has not been delivered', 'error');
                             _this.setLoading(false);
                         });
                         //end upload url
                     })
                     .catch(function (error) {
-                        console.log(error);
+
                         _this.setLoading(false);
                         //TODO: add error message
                     });

@@ -24,6 +24,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import Swal from 'sweetalert2'
     export default{
         mounted(){
             this.refreshFaxes();
@@ -37,8 +38,7 @@
                         _this.setFaxes(response.data)
                     })
                     .catch(function (error) {
-                        // handle error
-                        console.log(error)
+                        Swal.fire('Refreshing Faxes Failed', 'We were not able to receive previous faxes. Please try again later', 'error');
                     })
             },
             truncateSID(sid){

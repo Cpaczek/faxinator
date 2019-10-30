@@ -17,17 +17,13 @@ new Vue({
         ipcRenderer.send('appPath');
         ipcRenderer.on('appPathReply', (event, arg) => {
             this.setAppPath(arg);
-            console.log("arg being logged" + arg);
-            console.log("getapppath" + this.getApppath)
             this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
         });
         // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
-        console.log("getapppath" + this.getApppath)
 
         setInterval(()=>{
             // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
             this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
-            console.log("interval app path" + this.getApppath)
         }, 3000)
 
 

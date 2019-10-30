@@ -109,8 +109,6 @@
             autoFillContact(){
                 let tempName = this.getContactDetails.name;
                 let tempNumber = this.getContactDetails.number;
-                console.log("type of computed prop" + typeof(this.getContactDetails.name))
-                console.log("type of name" + typeof(tempName));
                 state.selectedContact = {'name': tempName, 'number': tempNumber};
                 this.$router.push({path: '/sendFax'})
 
@@ -128,7 +126,6 @@
                 let editConfig = editJsonFile(this.getApppath + '\\..\\..\\config.json');
 //                let editConfig = editJsonFile('C:\\Users\\cameron\\Documents\\config.json');
                 let contacts = editConfig.get('contacts')
-                console.log("contacts: " + contacts);
                 contacts[this.getContactIndex] = {
                     "id": this.getSelectedContact,
                     "number": this.number,
@@ -143,7 +140,6 @@
                 let editConfig = editJsonFile(this.getApppath + '\\..\\..\\config.json');
 //                let editConfig = editJsonFile('C:\\Users\\cameron\\Documents\\config.json');
                 let contacts = editConfig.get('contacts')
-                console.log("contacts: " + contacts);
                 contacts.push({
                     "id": Date.now(),
                     "number": this.addNumber,
