@@ -24,7 +24,6 @@
 </template>
 <script>
     import {ipcRenderer} from 'electron'
-    import { EventBus } from '../eventbus.js';
     import state from '../selectedContact.js'
     import {createReadStream} from 'fs';
     import fs from 'fs'

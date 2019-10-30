@@ -59,7 +59,6 @@
     </div>
 </template>
 <script>
-    import {EventBus} from '../eventbus.js';
     import {ipcRenderer} from 'electron'
     import editJsonFile from 'edit-json-file'
     import state from '../selectedContact.js'
