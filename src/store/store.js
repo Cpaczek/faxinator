@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         config: [],
+        contacts: [],
         faxes: null,
         selectedContact: null,
         loading: false,
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     mutations: {
         setConfig(state, val){
             state.config = val;
+        },
+        setContacts(state, val){
+            state.contacts = val;
         },
         setFaxes(state, val){
             state.faxes = val;
@@ -40,6 +44,7 @@ export default new Vuex.Store({
     },
     getters: {
         getConfig: state => state.config,
+        getContacts: state => state.contacts,
         getFaxes: state => state.faxes,
         getSelectedContact: state => state.selectedContact,
         getLoading: state => state.loading,

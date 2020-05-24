@@ -4,10 +4,12 @@ import router from './router'
 import store from './store/store'
 import fs from 'fs'
 import {ipcRenderer} from 'electron'
-import "./../node_modules/bulma/bulma.sass";
-
+import VueMask from 'v-mask'
+import { VueMaskFilter } from 'v-mask'
 Vue.config.productionTip = false
 
+Vue.use(VueMask);
+Vue.filter('VMask', VueMaskFilter);
 new Vue({
     router,
     store,
@@ -17,14 +19,16 @@ new Vue({
         ipcRenderer.send('appPath');
         ipcRenderer.on('appPathReply', (event, arg) => {
             this.setAppPath(arg);
-            this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
+            this.setConfig(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\config.json')));
+            this.setContacts(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\contact.json')));
         });
         // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
 
         setInterval(()=>{
             // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
-            this.setConfig(JSON.parse(fs.readFileSync(this.getApppath + '\\..\\..\\config.json')));
-        }, 3000)
+            this.setConfig(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\config.json')));
+            this.setContacts(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\contact.json')));
+        }, 3000);
 
 
 
@@ -37,7 +41,8 @@ new Vue({
             65: 'a',
             66: 'b'
         };
-        let konamiCode = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
+        let konamiCodeBefore = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a'];
+        let konamiCode = konamiCodeBefore.reverse();
         let konamiCodePosition = 0;
         document.addEventListener('keydown', function (e) {
             let key = allowedKeys[e.keyCode];
@@ -59,7 +64,9 @@ new Vue({
     methods: {
         setConfig(val){
             this.$store.commit('setConfig', val)
-
+        },
+        setContacts(val){
+            this.$store.commit('setContacts', val)
         },
         setAppPath(val){
             this.$store.commit('setAppPath', val);
@@ -67,7 +74,7 @@ new Vue({
 
     },
     computed:{
-        getApppath(){
+        getAppPath(){
             return this.$store.getters.getApppath;
         }
     }
