@@ -35,6 +35,8 @@
         methods:{
             refreshFaxes(){
                 let _this = this;
+                this.setLoading(true);
+                _this.setLoading(this.setLoadingMessage("Retrieving Faxes"));
                 axios.get(this.getConfig.functionsDomain + '/get-faxes?authtoken=' + this.getConfig.secret)
                     .then(function (response) {
                         // handle success
