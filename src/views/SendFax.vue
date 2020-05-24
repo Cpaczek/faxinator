@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="background" style="background-image: url('https://source.unsplash.com/1600x900/?fruit')">
+
+
         <div class="container sendFaxHeader has-text-centered">
             <h1>Send Fax</h1>
             <div class="field">
@@ -11,7 +14,7 @@
             <div class="field">
                 <label class="label">Phone Number</label>
                 <div class="control">
-                    <input v-model="number" type="text" class="input">
+                    <input v-model="number" v-mask="'##########'" type="text" class="input">
                 </div>
             </div>
             <a href="#" @click="chooseFile()" class="button is-primary">Choose File</a>
@@ -19,6 +22,7 @@
             <br>
             <a href="#" v-if="number && getSelectedDir" @click="sendFax()" class="button is-primary">Send</a>
 
+        </div>
         </div>
     </div>
 </template>
@@ -29,19 +33,20 @@
     import fs from 'fs'
     import Swal from 'sweetalert2'
     import axios from 'axios'
-    export default{
+
+    export default {
         data: () => {
-                return {
-                    //TODO: add selected dir to vuex
-                    number: null,
-                    name: null,
-                    tempViewUrl: "",
-                    tempUploadUrl: "",
-                }
+            return {
+                //TODO: add selected dir to vuex
+                number: null,
+                name: null,
+                tempViewUrl: "",
+                tempUploadUrl: "",
+            }
         },
-        beforeRouteEnter (to, from, next) {
-            next(vm =>{
-                if(from.path === '/contacts' && to.path === '/sendFax' && state.selectedContact.name){
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                if (from.path === '/contacts' && to.path === '/sendFax' && state.selectedContact.name) {
                     vm.number = state.selectedContact.number;
                     vm.name = state.selectedContact.name;
 
@@ -52,20 +57,20 @@
 
         },
         methods: {
-            chooseFile(){
+            chooseFile() {
 
                 ipcRenderer.send('fileUpload');
                 ipcRenderer.on('fileUploadReply', (event, arg) => {
                     this.setSelectedDir(arg[0]);
                 })
             },
-            getFileName(){
+            getFileName() {
                 if (this.getSelectedDir) {
                     return this.getSelectedDir.split('\\').pop()
                 }
 
             },
-            sendFax(){
+            sendFax() {
                 let _this = this;
                 this.setLoadingMessage("Requesting Upload URL");
                 this.setLoading(true);
@@ -95,28 +100,28 @@
                                 fileurl: _this.tempViewUrl
                             })
                                 .then(function (response) {
-                                    let loop = setInterval( ()=>{
+                                    let loop = setInterval(() => {
                                         axios.get(_this.getConfig.functionsDomain + '/get-fax', {
                                             params: {
                                                 authtoken: _this.getConfig.secret,
                                                 id: response.data.sid
                                             }
-                                        })
-                                            .then(function (response) {
+                                        }).then(function (response) {
                                                 let done = ['queued', 'processing', 'sending'];
 
-                                                if(done.includes(response.data.status)){
-                                                    _this.setLoadingMessage(response.data.status.charAt(0).toUpperCase() + response.data.status.slice(1))
-                                                }else if(response.data.status === 'delivered'){
-                                                   _this.setSelectedDir(null)
-                                                   _this.number = null;
-                                                   _this.name = null;
+                                                if (done.includes(response.data.status)) {
+                                                    Swal.fire(response.data.status.charAt(0).toUpperCase() + response.data.status.slice(1))
+                                                } else if (response.data.status === 'delivered') {
+                                                    _this.setSelectedDir(null)
+                                                    _this.number = null;
+                                                    _this.name = null;
                                                     Swal.fire('Fax Delivered', 'Your message has been delivered', 'success');
 
                                                     clearInterval(loop)
                                                     _this.setLoading(false)
-                                                }else{
+                                                } else {
                                                     Swal.fire('Fax Failed', 'Your message has not been delivered', 'error');
+                                                    _this.setLoading(false);
                                                     clearInterval(loop)
 
                                                 }
@@ -149,23 +154,23 @@
                     });
 
             },
-            setLoading(val){
+            setLoading(val) {
                 this.$store.commit('setLoading', val);
             },
-            setLoadingMessage(val){
+            setLoadingMessage(val) {
                 this.$store.commit('setLoadingMessage', val);
             },
-            setSelectedDir(val){
+            setSelectedDir(val) {
                 this.$store.commit('setSelectedDir', val);
             }
 
 
         },
         computed: {
-            getConfig(){
+            getConfig() {
                 return this.$store.getters.getConfig;
             },
-            getSelectedDir(){
+            getSelectedDir() {
                 return this.$store.getters.getSelectedDir;
             }
         }
@@ -174,16 +179,26 @@
 </script>
 <style scoped>
     .sendFaxHeader {
-        margin-top: 100px;
+        margin-top: 80px;
+        padding-top: 20px;
+        background: white;
+        border-radius: 20px;
+
     }
 
     h1 {
         font-size: 2em;
     }
-    h2{
+
+    h2 {
         font-size: 1.5em;
     }
-
+    .background{
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding-top: 100px;
+        height: 100vh;
+    }
     .control {
         width: 30%;
         margin: auto;
