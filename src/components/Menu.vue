@@ -32,7 +32,7 @@
         }
     }
 </script>
-<style scoped>
+<style scoped lang="scss">
     .navbar-burger {
         margin-left: auto;
         margin-right: 0;
@@ -57,7 +57,6 @@
         }
     }
     a.dropdown-item.is-active{
-        background-color: #00d1b2 !important;
         color: white;
     }
 
