@@ -14,6 +14,7 @@ export default new Vuex.Store({
         loadingMessage: 'Loading',
         selectedDir: null,
         apppath: null,
+        bgimgkeywords: null,
 
     },
     mutations: {
