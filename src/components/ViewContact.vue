@@ -57,6 +57,7 @@
                         <input v-model="notes" type="text" class="input">
                     </div>
                     <a href="#" @click="saveContact()" v-if="editmode" class="button is-primary sendFax">Save</a>
+                    <a href="#" @click="deleteContact()" v-if="editmode" class="button is-danger sendFax">Delete</a>
                 </div>
             </div>
             <button @click="editmode = false" class="modal-close is-large" aria-label="close"></button>
@@ -72,7 +73,7 @@
                 </div>
                 <div class="info-container">
                     <h2>Phone Number</h2>
-                    <p v-if="!editmode">{{this.getContactDetails.number | VMask('+1 (###) ###-####')}}</p>
+                    <p v-if="!editmode">{{this.getContactDetails.number | VMask('(###) ###-####')}}</p>
                 </div>
                 <div class="info-container">
                     <h2>Notes</h2>
@@ -167,6 +168,18 @@
                     "name": this.name,
                     "notes": this.notes
                 };
+                editContact.set("contacts", contacts);
+                editContact.save();
+                this.editmode = false;
+            },
+            deleteContact() {
+
+
+                let editContact = editJsonFile(this.getApppath + '\\..\\..\\data\\contact.json');
+//                let editConfig = editJsonFile('C:\\Users\\cameron\\Documents\\config.json');
+                let contacts = editContact.get('contacts');
+                contacts.splice(this.getContactIndex, 1);
+
                 editContact.set("contacts", contacts);
                 editContact.save();
                 this.editmode = false;
