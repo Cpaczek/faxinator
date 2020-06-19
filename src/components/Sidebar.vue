@@ -14,7 +14,7 @@
                     <li v-if="contact.category === category.id">
                         <a @click="setContact(contact.id)">
                             <p class="contact-name">{{contact.name}}</p>
-                            <p class="contact-number">{{contact.number | VMask('+1 (###) ###-####') }}</p>
+                            <p class="contact-number">{{contact.number | VMask('(###) ###-####') }}</p>
                         </a>
                     </li>
                 </div>
