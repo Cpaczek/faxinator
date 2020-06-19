@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div class="background" style="background-image: url('https://source.unsplash.com/1600x900/?fruit')">
+
+        <div v-if="getBgLink" class="background" :style="{ backgroundImage: `url(${getBgLink})` }">
 
 
         <div class="container sendFaxHeader has-text-centered">
-            <h1>Send Fax</h1>
+            <h1 @click="test()">Send Fax</h1>
             <div class="field">
                 <label v-if="name" class="label">Name</label>
                 <div class="control">
@@ -33,6 +34,7 @@
     import fs from 'fs'
     import Swal from 'sweetalert2'
     import axios from 'axios'
+    import { EventBus } from '../event-bus.js';
 
     export default {
         data: () => {
@@ -40,9 +42,19 @@
                 //TODO: add selected dir to vuex
                 number: null,
                 name: null,
+                bgimgkeywords: null,
                 tempViewUrl: "",
                 tempUploadUrl: "",
             }
+        },
+        mounted() {
+
+            EventBus.$on('loaded', ()=> {
+                this.bgimgkeywords = this.getConfig.bgkeywords;
+                console.log(this.getConfig.bgkeywords)
+            });
+            this.bgimgkeywords = this.getConfig.bgkeywords;
+
         },
         beforeRouteEnter(to, from, next) {
             next(vm => {
@@ -110,7 +122,8 @@
                                                 let done = ['queued', 'processing', 'sending'];
 
                                                 if (done.includes(response.data.status)) {
-                                                    Swal.fire(response.data.status.charAt(0).toUpperCase() + response.data.status.slice(1))
+                                                    _this.setLoading(true)
+                                                    _this.setLoadingMessage(response.data.status.charAt(0).toUpperCase() + response.data.status.slice(1))
                                                 } else if (response.data.status === 'delivered') {
                                                     _this.setSelectedDir(null)
                                                     _this.number = null;
@@ -162,7 +175,7 @@
             },
             setSelectedDir(val) {
                 this.$store.commit('setSelectedDir', val);
-            }
+            },
 
 
         },
@@ -172,6 +185,9 @@
             },
             getSelectedDir() {
                 return this.$store.getters.getSelectedDir;
+            },
+            getBgLink(){
+                return "https://source.unsplash.com/1600x900/?" + this.bgimgkeywords;
             }
         }
 
