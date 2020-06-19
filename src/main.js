@@ -6,6 +6,7 @@ import fs from 'fs'
 import {ipcRenderer} from 'electron'
 import VueMask from 'v-mask'
 import { VueMaskFilter } from 'v-mask'
+import { EventBus } from './event-bus.js';
 Vue.config.productionTip = false
 
 Vue.use(VueMask);
@@ -21,6 +22,7 @@ new Vue({
             this.setAppPath(arg);
             this.setConfig(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\config.json')));
             this.setContacts(JSON.parse(fs.readFileSync(this.getAppPath + '\\..\\..\\data\\contact.json')));
+            EventBus.$emit('loaded');
         });
         // this.setConfig(JSON.parse(fs.readFileSync('C:\\Users\\cameron\\Documents\\config.json')));
 
